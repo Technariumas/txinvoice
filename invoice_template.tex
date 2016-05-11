@@ -1,0 +1,106 @@
+{{=<< >>=}}
+
+\documentclass[
+  paper=a4,
+  fontsize=10pt,
+  parskip=full,
+  DIV=21,
+  BCOR=8mm,
+  headinclude=true,
+  % footinclude=true,
+  headheight=7cm,
+  footheight=-0.5cm,
+  % headsepline=true,
+  footsepline=false
+]{scrartcl}
+
+\usepackage{latex-invoice-lt}
+\setmainfont{TeX Gyre Heros}
+
+\begin{document}
+
+% accounting information
+\setproperty{invoice}{Sum}{<< sum >>}
+\setproperty{invoice}{VAT}{<< vat >>}
+\setproperty{invoice}{Total}{<< total >>}
+
+\setproperty{POS}{ID}{<< pos_id >>}
+\setproperty{POS}{Number}{<< pos_number >>}
+
+\setproperty{invoice}{Series}{<< series >>}
+\setproperty{invoice}{Number}{<< number >>}
+\setproperty{invoice}{ID}{\getproperty{invoice}{Series}\getproperty{invoice}{Number}}
+
+\setproperty{invoice}{Date}{<< date >>}
+\setproperty{invoice}{Due}{<< due >>}
+
+<<#seller>>
+\setproperty{seller}{Name}{<< name >>}
+\setproperty{seller}{Address}{<< address >>}
+\setproperty{seller}{Phone}{<< phone >>}
+\setproperty{seller}{Bank}{<< bank >>}
+\setproperty{seller}{Account}{<< account >>}
+\setproperty{seller}{ID}{<< id >>}
+\setproperty{seller}{VAT}{<< vat_id >>}
+
+\setproperty{seller}{Person}{<< person >>}
+\setproperty{seller}{URI}{<< uri >>}
+\setproperty{seller}{Email}{<< email >>}
+\setproperty{seller}{Banner}{<< banner >>}
+<</seller>>
+
+% client information
+<<#client>>
+\setproperty{client}{Name}{<< name >>}
+\setproperty{client}{Address}{<< address >>}
+\setproperty{client}{Phone}{<< phone >>}
+\setproperty{client}{Bank}{<< bank >>}
+\setproperty{client}{Account}{<< account >>}
+\setproperty{client}{ID}{<< id >>}
+\setproperty{client}{VAT}{<< vat_id >>}
+<</client>>
+
+%------------------------------
+
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+\begin{longtable}{L{7.7cm}L{1.7cm}L{1.7cm}|R{2cm}|R{2cm}|}
+
+\hline
+\multicolumn{1}{|L{7.7cm} }{\textbf{Pavadinimas}} &
+\multicolumn{1}{|L{1.7cm} }{\textbf{Mato vnt.}}   &
+\multicolumn{1}{|L{1.7cm}|}{\textbf{Kiekis}}      &
+\textbf{Kaina, €} & \textbf{Suma, €}              \\
+
+\hline
+\endfirsthead
+\multicolumn{5}{c}{...} \\
+\hline
+
+\multicolumn{1}{|L{7.7cm} }{\textbf{Pavadinimas}} &
+\multicolumn{1}{|L{1.7cm} }{\textbf{Mato vnt.}}   &
+\multicolumn{1}{|L{1.7cm}|}{\textbf{Kiekis}}      &
+\textbf{Kaina, €} & \textbf{Suma, €}              \\
+
+\hline
+\endhead
+\hline
+\multicolumn{5}{c}{...} \\
+\endfoot
+\endlastfoot
+
+<<#items>>
+\pos{<< title >>} & \units{<< unit >>} & \qtty{<< quantity >>} & \price{<< price >>} & \total{<< total >>}
+<</items>>
+
+\invoiceSum
+\invoiceVAT
+\invoiceTotal
+
+\end{longtable}
+
+\invoiceParties{}
+
+%------------------------------
+
+\end{document}
