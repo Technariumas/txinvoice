@@ -2,6 +2,9 @@
 
 Programa sąskaitų generavimui.
 
+LaTeX sąskaitos šablonas iš https://github.com/monai/latex-invoice
+
+
 ## Instaliavimas
 
 Iš sisteminių paketų `texlive` ir `tex-gyre`. Python dependencus galima gauti
@@ -11,6 +14,14 @@ su
 
 
 ## Naudojimas
+
+### HTTP sąsaja
+
+Paleisti serverį:
+
+    ./server.py
+
+Siųsti užklausą:
 
     curl -X POST -d '{
         "seller": {
