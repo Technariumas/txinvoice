@@ -1,6 +1,6 @@
 # txinvoice
 
-Programa Lietuviškų sąskaitų generavimui.
+Programa sąskaitų generavimui.
 
 ## Instaliavimas
 
