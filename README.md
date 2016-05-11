@@ -24,7 +24,7 @@ su
         "series": "ŠK",
         "number": "00001",
         "items": [
-          {"title": "Narystė", "unit": "mėn.", "quantity": "1", "price": "10", "total": "10"}
+            {"title": "Narystė", "unit": "mėn.", "quantity": "1", "price": "10", "total": "10"}
         ],
         "sum": "10",
         "vat": "0",
