@@ -1,7 +1,6 @@
 import pystache
 import tempfile
 import os
-import subprocess
 import sh
 import shutil
 import re
@@ -35,28 +34,29 @@ def tex_escape(text):
 
 TEX_RENDERER = pystache.Renderer(escape=tex_escape)
 
-def render_tex(template, data, filename=None):
+def render_tex(template, data, filename=None, verbose=False):
     if filename is not None:
         filename = os.path.abspath(filename)
     with tempfile.TemporaryDirectory(prefix='render_tex') as d:
-        oldpwd = os.getcwd()
+        tex = os.path.join(d, 'output.tex')
+        pdf = os.path.join(d, 'output.pdf')
+        with open(tex, 'w') as f:
+            f.write(TEX_RENDERER.render_path(template, data, escape=tex_escape))
         try:
-            os.chdir(d)
-            with open('output.tex', 'w') as tex:
-                tex.write(TEX_RENDERER.render_path(template, data, escape=tex_escape))
-            try:
-                sh.xelatex('-halt-on-error', tex.name, _env=dict(TEXINPUTS=TEX_PATH + ':'))
-            except sh.ErrorReturnCode as e:
-                raise Exception("XeLaTeX failed with: {}".format(e.stdout.decode('utf-8')))
-            if filename is None:
-                with open(os.path.join(d, "output.pdf"), "rb") as f:
-                    return f.read()
-            else:
-                os.chdir(oldpwd)
-                shutil.copyfile(os.path.join(d, "output.pdf"), filename)
-        finally:
-            os.chdir(oldpwd)
+            out = sh.xelatex('-halt-on-error',
+                             '-output-directory=' + d,
+                             tex,
+                             _env=dict(TEXINPUTS=TEX_PATH + ':'))
+            if verbose:
+                print(out)
+        except sh.ErrorReturnCode as e:
+            raise Exception("LaTeX failed with: {}".format(e.stdout.decode('utf-8')))
+        if filename is None:
+            with open(pdf, "rb") as f:
+                return f.read()
+        else:
+            shutil.copyfile(pdf, filename)
 
 
-def render_invoice(data, filename=None):
-    return render_tex(INVOICE_TEMPLATE, data, filename=filename)
+def render_invoice(data, filename=None, verbose=False):
+    return render_tex(INVOICE_TEMPLATE, data, filename=filename, verbose=verbose)
