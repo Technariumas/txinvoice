@@ -49,7 +49,7 @@ def render_tex(template, data, filename=None):
             except sh.ErrorReturnCode as e:
                 raise Exception("XeLaTeX failed with: {}".format(e.stdout.decode('utf-8')))
             if filename is None:
-                with open("output.pdf", "rb") as f:
+                with open(os.path.join(d, "output.pdf"), "rb") as f:
                     return f.read()
             else:
                 os.chdir(oldpwd)
