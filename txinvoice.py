@@ -46,7 +46,8 @@ def render_tex(template, data, filename=None, verbose=False):
             out = sh.xelatex('-halt-on-error',
                              '-output-directory=' + d,
                              tex,
-                             _env=dict(TEXINPUTS=TEX_PATH + ':'))
+                             _env=dict(TEXINPUTS=TEX_PATH + ':',
+                                       PATH=os.getenv("PATH")))
             if verbose:
                 print(out)
         except sh.ErrorReturnCode as e:
