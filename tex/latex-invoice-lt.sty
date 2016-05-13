@@ -84,9 +84,14 @@
 \usepackage{scrlayer-scrpage}
 \clearscrheadfoot 
 
-\newcommand{\ifnonempty}[2]{
-    \IfStrEq{#1}{}{}{#2}
+\newcommand{\ifempty}[3]{
+    \IfStrEq{#1}{}{#2}{#3}
 }
+
+\newcommand{\ifnonempty}[2]{
+    \ifempty{#1}{}{#2}
+}
+
 
 \newcommand{\myheader}{%
   \begin{minipage}[t]{\textwidth}
@@ -112,9 +117,15 @@
     \medskip
     
     \begin{tabular}[t]{@{}p{3cm}p{5cm}@{}}
-      \ifnonempty{\getproperty{seller}{Address}}{Registracijos adresas & \getproperty{seller}{Address} \\}
+      \ifnonempty{\getproperty{seller}{Address}}{Adresas & \getproperty{seller}{Address} \\}
       \ifnonempty{\getproperty{seller}{Phone}}{Telefonas             & \getproperty{seller}{Phone}   \\}
-      \ifnonempty{\getproperty{seller}{ID}}{Įmonės kodas          & \getproperty{seller}{ID}      \\}
+      \ifnonempty{\getproperty{seller}{ID}}{
+          \ifempty{\getproperty{seller}{IDText}}{
+              Įmonės kodas
+          }{
+              \getproperty{seller}{IDText}
+          }          & \getproperty{seller}{ID}      \\
+      }
       \ifnonempty{\getproperty{seller}{VAT}}{PVM mokėtojo kodas    & \getproperty{seller}{VAT}}
     \end{tabular}
     \hfill
@@ -129,7 +140,13 @@
     
     \begin{tabular}[t]{@{}p{3cm}p{5cm}@{}}
       Pirkėjas           & \getproperty{client}{Name}    \\
-      \ifnonempty{\getproperty{client}{ID}}{Kodas              & \getproperty{client}{ID}      \\}
+      \ifnonempty{\getproperty{client}{ID}}{
+          \ifempty{\getproperty{client}{IDText}}{
+              Kodas
+          }{
+              \getproperty{client}{IDText}
+          }          & \getproperty{client}{ID}      \\
+      }
       \ifnonempty{\getproperty{client}{VAT}}{PVM mokėtojo kodas & \getproperty{client}{VAT}     \\}
       \ifnonempty{\getproperty{client}{Address}}{Adresas            & \getproperty{client}{Address}}
     \end{tabular}
