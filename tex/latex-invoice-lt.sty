@@ -92,31 +92,25 @@
     \ifempty{#1}{}{#2}
 }
 
+\newcommand{\ifvat}[2]{
+    \ifempty{\getproperty{seller}{VAT}}{#2}{#1}
+}
+
 
 \newcommand{\myheader}{%
   \begin{minipage}[t]{\textwidth}
     \centering
-    \large\textbf{PVM sąskaita faktūra} \\
-    \normalsize{Serija \getproperty{invoice}{Series} nr. \getproperty{invoice}{Number}}
+    \large\textbf{\ifvat{PVM sąskaita faktūra}{Sąskaita faktūra}} \\
+    \normalsize{Serija \getproperty{invoice}{Series} nr. \getproperty{invoice}{Number}} \\
+    Išrašymo data \getproperty{invoice}{Date} \\
+    \ifnonempty{\getproperty{invoice}{Due}}{Apmokėti iki \getproperty{invoice}{Due}     \\}
     \bigskip
     \smallskip
   \end{minipage}
   
   \begin{minipage}[t]{\textwidth}
-    \small
-    \begin{tabular}[b]{@{}p{3cm}p{5cm}@{}}
-      \multicolumn{2}{@{}l}{
-        \large{\textbf{\getproperty{seller}{Name}}}
-      }
-    \end{tabular}
-    \hfill
-    \begin{tabular}[b]{@{}p{2.8cm}p{5cm}@{}}
-      \normalsize{Dokumento nr.} & \normalsize{\getproperty{invoice}{ID}}
-    \end{tabular}
-    
-    \medskip
-    
-    \begin{tabular}[t]{@{}p{3cm}p{5cm}@{}}
+    \begin{tabular}[t]{@{}p{5cm}p{10cm}@{}}
+      Pardavėjas & \getproperty{seller}{Name} \\
       \ifnonempty{\getproperty{seller}{Address}}{Adresas & \getproperty{seller}{Address} \\}
       \ifnonempty{\getproperty{seller}{Phone}}{Telefonas             & \getproperty{seller}{Phone}   \\}
       \ifnonempty{\getproperty{seller}{ID}}{
@@ -126,19 +120,14 @@
               \getproperty{seller}{IDText}
           }          & \getproperty{seller}{ID}      \\
       }
-      \ifnonempty{\getproperty{seller}{VAT}}{PVM mokėtojo kodas    & \getproperty{seller}{VAT}}
-    \end{tabular}
-    \hfill
-    \begin{tabular}[t]{@{}p{2.8cm}p{5cm}@{}}
-      Data                & \getproperty{invoice}{Date}    \\
-      \ifnonempty{\getproperty{invoice}{Due}}{Apmokėti iki        & \getproperty{invoice}{Due}     \\}
       \ifnonempty{\getproperty{seller}{Bank}}{Bankas              & \getproperty{seller}{Bank}     \\}
-      \ifnonempty{\getproperty{seller}{Account}}{Banko sąskaitos nr. & \getproperty{seller}{Account}}
+      \ifnonempty{\getproperty{seller}{Account}}{Banko sąskaitos nr. & \getproperty{seller}{Account} \\}
+      \ifvat{PVM mokėtojo kodas    & \getproperty{seller}{VAT}}{Ne PVM mokėtojas} \\
     \end{tabular}
     
-    \par\nobreak\vspace{2mm}\rule{\textwidth}{0.4pt}\vspace{2mm}
+    \bigskip
     
-    \begin{tabular}[t]{@{}p{3cm}p{5cm}@{}}
+    \begin{tabular}[t]{@{}p{5cm}p{10cm}@{}}
       Pirkėjas           & \getproperty{client}{Name}    \\
       \ifnonempty{\getproperty{client}{ID}}{
           \ifempty{\getproperty{client}{IDText}}{
@@ -150,9 +139,8 @@
       \ifnonempty{\getproperty{client}{VAT}}{PVM mokėtojo kodas & \getproperty{client}{VAT}     \\}
       \ifnonempty{\getproperty{client}{Address}}{Adresas            & \getproperty{client}{Address}}
     \end{tabular}
-    \hfill
     \ifnonempty{\getproperty{POS}{ID}}{
-        \begin{tabular}[t]{@{}p{2.8cm}p{5cm}@{}}
+        \begin{tabular}[t]{@{}p{5cm}p{10cm}@{}}
           Kasos aparato nr. & \getproperty{POS}{ID}     \\
           Kvito nr.         & \getproperty{POS}{Number}
         \end{tabular}
@@ -198,11 +186,16 @@
 
 }
 
-\newcommand{\invoiceSum}{
-\multicolumn{2}{l}{} & \multicolumn{2}{|r|}{Suma be PVM}   & \getproperty{invoice}{Sum}  \\ \cline{3-5}}
-
-\newcommand{\invoiceVAT}{
-\multicolumn{2}{l}{} & \multicolumn{2}{|r|}{PVM \getproperty{invoice}{VATrate}\%}   & \getproperty{invoice}{VAT}  \\ \cline{3-5}
+\ifvat{
+    \newcommand{\invoiceSum}{
+        \multicolumn{2}{l}{} & \multicolumn{2}{|r|}{Suma be PVM}   & \getproperty{invoice}{Sum}  \\ \cline{3-5}
+    }
+    \newcommand{\invoiceVAT}{
+        \multicolumn{2}{l}{} & \multicolumn{2}{|r|}{PVM \getproperty{invoice}{VATrate}\%}   & \getproperty{invoice}{VAT}  \\ \cline{3-5}
+    }
+}{
+    \newcommand{\invoiceSum}{}
+    \newcommand{\invoiceVAT}{}
 }
 
 
