@@ -41,8 +41,10 @@ for invoice in invoices:
     sum = Decimal('0.00')
     for item in invoice["items"]:
         item = item.copy()
+        item["price"] = Decimal(item["price"]).quantize(Decimal('0.00'))
         if "quantity" in item:
             item["total"] = str(Decimal(item["quantity"]) * Decimal(item["price"]))
+        item["total"] = Decimal(item["total"]).quantize(Decimal('0.00'))
         template_data["items"].append(item)
         sum += Decimal(item["total"])
     template_data["sum"] = str(sum)
