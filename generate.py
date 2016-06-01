@@ -50,6 +50,7 @@ for invoice in invoices:
     template_data["sum"] = str(sum)
     template_data["vat"] = "0"
     template_data["total"] = str(sum)
+    template_data["total_words"] = True
 
     print(template_data)
     txinvoice.render_invoice(template_data, filename=filename)
