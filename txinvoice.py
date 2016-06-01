@@ -130,13 +130,13 @@ def lithuanian_number(number):
 def amount_words(amount):
     """
     >>> amount_words("10.50")
-    'dešimt eurų, penkiasdešimt centų'
+    'dešimt eurų, 50 ct'
     >>> amount_words("0.13")
-    'trylika centų'
+    '13 ct'
     >>> amount_words("190,00")
-    'šimtas devyniasdešimt eurų'
+    'šimtas devyniasdešimt eurų, 00 ct'
     >>> amount_words("190")
-    'šimtas devyniasdešimt eurų'
+    'šimtas devyniasdešimt eurų, 00 ct'
     """
     amount = amount.replace(",", ".")
     if '.' in amount:
@@ -153,9 +153,7 @@ def amount_words(amount):
     if euros:
         items.append("{} {}".format(lithuanian_number(euros),
                                     pluralize(euros, "eurų", "euras", "eurai")))
-    if cents:
-        items.append("{} {}".format(lithuanian_number(cents),
-                                    pluralize(cents, "centų", "centas", "centai")))
+    items.append("{:02} ct".format(cents))
     return ", ".join(items)
 
 
