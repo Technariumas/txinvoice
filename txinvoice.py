@@ -131,10 +131,12 @@ def amount_words(amount):
     """
     >>> amount_words("10.50")
     'dešimt eurų, penkiasdešimt centų'
+    >>> amount_words("0.13")
+    'trylika centų'
     >>> amount_words("190,00")
-    'šimtas devyniasdešimt eurų, nulis centų'
+    'šimtas devyniasdešimt eurų'
     >>> amount_words("190")
-    'šimtas devyniasdešimt eurų, nulis centų'
+    'šimtas devyniasdešimt eurų'
     """
     amount = amount.replace(",", ".")
     if '.' in amount:
@@ -145,10 +147,16 @@ def amount_words(amount):
     else:
         euros = int(amount)
         cents = 0
-    return "{} {}, {} {}".format(lithuanian_number(euros),
-                                 pluralize(euros, "eurų", "euras", "eurai"),
-                                 lithuanian_number(cents),
-                                 pluralize(cents, "centų", "centas", "centai"))
+
+    items = []
+    assert euros or cents
+    if euros:
+        items.append("{} {}".format(lithuanian_number(euros),
+                                    pluralize(euros, "eurų", "euras", "eurai")))
+    if cents:
+        items.append("{} {}".format(lithuanian_number(cents),
+                                    pluralize(cents, "centų", "centas", "centai")))
+    return ", ".join(items)
 
 
 TEX_RENDERER = pystache.Renderer(escape=tex_escape)
