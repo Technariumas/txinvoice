@@ -200,7 +200,14 @@
 
 
 \newcommand{\invoiceTotal}{
-\multicolumn{2}{l}{} & \multicolumn{2}{|r|}{Mokėjimo suma} & \getproperty{invoice}{Total} \\ \cline{3-5}
+    \multicolumn{2}{l}{} & \multicolumn{2}{|r|}{Mokėjimo suma} & \getproperty{invoice}{Total} \\ \cline{3-5}
+}
+
+\newcommand{\invoiceTotalWords}{
+    \ifempty{\getproperty{invoice}{TotalWords}}{
+    }{
+        Suma žodžiais: \getproperty{invoice}{TotalWords}.
+    }
 }
 
 \newcommand{\pos}[1]{
