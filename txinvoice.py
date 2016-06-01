@@ -133,11 +133,18 @@ def amount_words(amount):
     'dešimt eurų, penkiasdešimt centų'
     >>> amount_words("190,00")
     'šimtas devyniasdešimt eurų, nulis centų'
+    >>> amount_words("190")
+    'šimtas devyniasdešimt eurų, nulis centų'
     """
-    euros, cents = amount.replace(",", ".").rsplit(".", 1)
-    euros = int(euros)
-    cents = int(cents)
-    assert cents < 100
+    amount = amount.replace(",", ".")
+    if '.' in amount:
+        euros, cents = amount.rsplit(".", 1)
+        euros = int(euros)
+        cents = int(cents)
+        assert cents < 100
+    else:
+        euros = int(amount)
+        cents = 0
     return "{} {}, {} {}".format(lithuanian_number(euros),
                                  pluralize(euros, "eurų", "euras", "eurai"),
                                  lithuanian_number(cents),
