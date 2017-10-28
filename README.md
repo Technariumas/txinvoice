@@ -26,7 +26,8 @@ Siųsti užklausą:
     curl -X POST -d '{
         "seller": {
             "name": "UAB Įmonita",
-            "id": "00666"
+			"person": "direktorius Labai Geras",
+            "id": "00668"
         },
         "client": {
             "name": "Jonas Jonavičius",
