@@ -72,6 +72,6 @@ def amount_words(amount):
     assert euros or cents
     if euros:
         items.append("{} {}".format(lithuanian_number(euros),
-                                    pluralize(euros, "eurų", "euras", "eurai")))
+                                    pluralize(euros, "Eurų", "Euras", "Eurai")))
     items.append("{:02} ct".format(cents))
     return ", ".join(items)
