@@ -46,7 +46,7 @@ def lithuanian_number(number):
             items.append(LITHUANIAN_NUMBER_COMMON[hundreds])
         items.append(pluralize(hundreds, "šimtų", "šimtas", "šimtai"))
     if common or not items:
-        if 1 <= common <= len(LITHUANIAN_NUMBER_COMMON):
+        if 1 <= common <= ( len(LITHUANIAN_NUMBER_COMMON) - 1 ):
             items.append(LITHUANIAN_NUMBER_COMMON[common])
         else:
             ones = common % 10
